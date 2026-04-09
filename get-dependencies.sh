@@ -6,7 +6,7 @@ ARCH=$(uname -m)
 
 echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
-# pacman -Syu --noconfirm PACKAGESHERE
+pacman -Syu --noconfirm jre11-openjdk openssl
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
@@ -16,11 +16,10 @@ get-debloated-pkgs --add-common --prefer-nano
 #make-aur-package PACKAGENAME
 
 # If the application needs to be manually built that has to be done down here
+wget https://downloadirpf.receita.fazenda.gov.br/irpf/2025/irpf/arquivos/IRPF2025-1.7.zip
+bsdtar -xvf IRPF2025-1.7.zip --strip-components=1
+rm -f *.zip
 
-# if you also have to make nightly releases check for DEVEL_RELEASE = 1
-#
-# if [ "${DEVEL_RELEASE-}" = 1 ]; then
-# 	nightly build steps
-# else
-# 	regular build steps
-# fi
+mkdir -p ./AppDir/bin
+sed -i 's|\./jre/bin/java -jar irpf.jar|exec java -jar "$APPDIR/bin/irpf.jar" "$@"|' exec.sh
+mv -v exec.sh lib lib-modulos irpf.jar IRPF.acb offline.png online.png pgd-updater.jar ./AppDir/bin
