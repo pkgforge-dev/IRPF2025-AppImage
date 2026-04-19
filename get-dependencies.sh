@@ -16,8 +16,10 @@ get-debloated-pkgs --add-common --prefer-nano
 #make-aur-package PACKAGENAME
 
 # If the application needs to be manually built that has to be done down here
-wget https://downloadirpf.receita.fazenda.gov.br/irpf/2025/irpf/arquivos/IRPF2025-1.7.zip
-bsdtar -xvf IRPF2025-1.7.zip --strip-components=1
+VERSION=1.7
+echo "$VERSION" > ~/version
+wget https://downloadirpf.receita.fazenda.gov.br/irpf/2025/irpf/arquivos/IRPF2025-${VERSION}.zip
+bsdtar -xvf IRPF2025-${VERSION}.zip --strip-components=1
 rm -f *.zip
 
 mkdir -p ./AppDir/bin
